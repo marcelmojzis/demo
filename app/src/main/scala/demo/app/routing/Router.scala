@@ -7,8 +7,10 @@ import com.raquo.laminar.api.L.*
 import com.raquo.laminar.api.eventPropToProcessor
 import com.raquo.laminar.modifiers.*
 import com.raquo.waypoint.{Router as WaypointRouter, *}
+import demo.api.PersonId
 import org.scalajs.dom
 import org.scalajs.dom.MouseEvent
+import scala.language.implicitConversions
 
 object Router:
   private val basePath = "/app"
@@ -19,10 +21,27 @@ object Router:
   private val peopleRoute =
     Route.static[Page.People.type](Page.People, root / "people" / endOfSegments, basePath)
 
+  private val newPersonRoute =
+    Route.static[Page.NewPerson.type](
+      Page.NewPerson,
+      root / "people" / "new" / endOfSegments,
+      basePath
+    )
+
+  private val personIdSegment = segment[Long].as(id => PersonId(id), identity)
+
+  private val editPersonRoute =
+    Route[Page.EditPerson, PersonId](
+      encode = page => page.id,
+      decode = id => Page.EditPerson(id),
+      pattern = root / "people" / personIdSegment / "edit" / endOfSegments,
+      basePath = basePath
+    )
+
   private given JsonValueCodec[Page] = JsonCodecMaker.make
 
   private val router = WaypointRouter[Page](
-    routes = List(motdRoute, peopleRoute),
+    routes = List(motdRoute, peopleRoute, newPersonRoute, editPersonRoute),
     serializePage = page => writeToString(page),
     deserializePage = s => readFromString(s),
     getPageTitle = page => title(page),
@@ -34,8 +53,10 @@ object Router:
   )
 
   private def title(page: Page): String = page match
-    case Page.Motd   => "Demo: Message of the day"
-    case Page.People => "Demo: People"
+    case Page.Motd          => "Demo: Message of the day"
+    case Page.People        => "Demo: People"
+    case Page.NewPerson     => "Demo: Create person"
+    case _: Page.EditPerson => "Demo: Edit person"
 
   def currentPageSignal: Signal[Page] = router.currentPageSignal
 

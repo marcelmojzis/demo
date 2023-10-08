@@ -28,6 +28,8 @@ def main(): Unit =
     SplitRender[Page, HtmlElement](Router.currentPageSignal)
       .collectStatic(Page.Motd)(MotdPage())
       .collectStatic(Page.People)(PeoplePage())
+      .collectStatic(Page.NewPerson)(EditPersonPage(None))
+      .collect[Page.EditPerson](page => EditPersonPage(Some(page.id)))
       .signal
 
   renderOnDomContentLoaded(container(), app())

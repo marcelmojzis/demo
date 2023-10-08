@@ -33,6 +33,6 @@ object MotdPage:
         )
       ),
       B.bar(
-        B.button(label = "Next message", onClick.preventDefault.mapTo(Reload) --> commandBus.writer)
+        B.primary(label = "Next message", onClick.preventDefault.mapTo(Reload) --> commandBus.writer)
       )
     )
