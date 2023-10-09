@@ -6,20 +6,32 @@ Demo has the following structure:
 
 ```
 demo/
+|-- api/
+|   |-- src/main/scala/
+|       |-- demo/api/
+|       |-- ...
 |-- project/
 |   |-- build.properties
 |   |-- plugins.sbt
-|-- src/main/scala/
-|   |-- demo/
-|       |-- HelloWorld.scala
-|-- .scalafmt.conf
+|   |-- Versions.scala
+|-- service/ 
+|   |-- src/main/
+|       |-- resources
+|           |-- logback.xml
+|       |-- scala/
+|           |-- demo/service
+|               |-- Main.scala
+|               |-- ... 
+|-- .scalafmt.conf 
 |-- build.sbt
 ```
 
 - `build.sbt`: Contains the build definition.
 - `project/build.properties`: Specifies the SBT version.
 - `project/plugins.sbt`: Defines SBT plugins to use in the project.
-- `src/main/scala/`: Contains Scala source files.
+- `project/Version.scala`: Contains a list of versions of 3rd party dependencies.
+- `api/`: Contains service endpoint definitions and payload models. This module is used by the `service` module.
+- `service/`: Contains the backend sources.
 
 ## Setup Development Environment on Mac
 
@@ -70,20 +82,16 @@ sbt -version
    cd path/to/demo
    ```
 
-2. **Start SBT**
-
-   Simply type `sbt` and hit enter:
+2. **Start the backend**
 
    ```bash
-   sbt
+   sbt service/run
    ```
+   
+   After starting the service, you can check if the backend is running:
 
-   This will start the SBT interactive shell.
-
-3. **Run HelloWorld**
-
-   Inside the SBT shell, type `run` and hit enter.
-
+   ```bash
+   curl http://localhost:8080/api/motd
    ```
-   run
-   ```
+   
+   This should return a random message of the day.
