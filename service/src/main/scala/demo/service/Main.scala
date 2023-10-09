@@ -7,11 +7,15 @@ import sttp.tapir.server.http4s.Http4sServerInterpreter
 
 object Main extends IOApp.Simple:
   override def run: IO[Unit] =
-    val endpoints = MotdServerEndpoints.endpoints
-    val routes = Http4sServerInterpreter[IO]().toRoutes(endpoints)
+    for
+      peopleService <- PeopleService()
 
-    BlazeServerBuilder[IO]
-      .bindHttp(port = 8080, host = "localhost")
-      .withHttpApp(Router("/api" -> routes).orNotFound)
-      .resource
-      .useForever
+      endpoints = MotdServerEndpoints.endpoints ++ PeopleServerEndpoints(peopleService).endpoints
+      routes = Http4sServerInterpreter[IO]().toRoutes(endpoints)
+
+      result <- BlazeServerBuilder[IO]
+        .bindHttp(port = 8080, host = "localhost")
+        .withHttpApp(Router("/api" -> routes).orNotFound)
+        .resource
+        .useForever
+    yield result
