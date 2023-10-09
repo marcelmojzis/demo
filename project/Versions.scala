@@ -3,4 +3,5 @@ object Versions {
   val blazeServerVersion = "0.23.15"
   val jsoniterVersion = "2.24.1"
   val logbackVersion = "1.4.11"
+  val scalajsDomVersion = "2.8.0"
 }

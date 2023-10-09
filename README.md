@@ -7,9 +7,18 @@ Demo has the following structure:
 ```
 demo/
 |-- api/
-|   |-- src/main/scala/
+|   |-- shared/src/main/scala/
 |       |-- demo/api/
 |       |-- ...
+|-- app/
+|   |-- src/main/scala/
+|   |   |-- demo/app/
+|   |       |-- Main.scala
+|   |       |-- ...
+|   |-- index.html
+|   |-- main.js
+|   |-- package.json
+|   |-- vite.config.js
 |-- project/
 |   |-- build.properties
 |   |-- plugins.sbt
@@ -30,7 +39,8 @@ demo/
 - `project/build.properties`: Specifies the SBT version.
 - `project/plugins.sbt`: Defines SBT plugins to use in the project.
 - `project/Version.scala`: Contains a list of versions of 3rd party dependencies.
-- `api/`: Contains service endpoint definitions and payload models. This module is used by the `service` module.
+- `api/`: Contains service endpoint definitions and payload models. This module is used by both the `app` and `service` modules.
+- `app/`: Contains the frontend application and Vite configuration.
 - `service/`: Contains the backend sources.
 
 ## Setup Development Environment on Mac
@@ -95,3 +105,31 @@ sbt -version
    ```
    
    This should return a random message of the day.
+
+3. **Start the frontend**
+
+   Open a new terminal and start the SBT interactive shell:
+
+   ```bash
+   sbt
+   ```
+
+   Continually compile Scala.js sources. This will re-compile the app every time a source file changes:
+
+   ```
+   ~fastLinkJS
+   ```
+
+   Open a new terminal and navigate to the `app` folder:
+
+   ```bash
+   cd app
+   ```
+   
+   Start Vite development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   After Vite starts, you can open the app in your default web browser by pressing the o key in the terminal.
