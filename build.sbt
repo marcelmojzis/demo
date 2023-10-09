@@ -29,6 +29,7 @@ lazy val app = (project in file("app"))
     },
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion,
+      "com.raquo" %%% "laminar" % laminarVersion,
       "com.github.plokhotnyuk.jsoniter-scala" %%% "jsoniter-scala-core" % jsoniterVersion,
       "com.github.plokhotnyuk.jsoniter-scala" %%% "jsoniter-scala-macros" % jsoniterVersion % Provided,
       "com.softwaremill.sttp.tapir" %%% "tapir-sttp-client" % tapirVersion
